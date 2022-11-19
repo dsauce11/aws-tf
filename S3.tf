@@ -49,6 +49,16 @@ resource "aws_s3_bucket" "demo-bucket"{
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "demo-bucket" {
+  provider = aws.east 
+  bucket = aws_s3_bucket.demo-bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 // AWS replicate to
 
 provider "aws" {
@@ -67,6 +77,15 @@ resource "aws_s3_bucket" "demo-destination" {
     Name = "S3Bucket"
   }
   
+}
+
+resource "aws_s3_bucket_public_access_block" "demo-destination" {
+  bucket = aws_s3_bucket.demo-destination.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 // AWS IAM Role creation
